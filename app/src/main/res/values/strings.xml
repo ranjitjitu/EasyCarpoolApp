@@ -3,4 +3,15 @@
     <string name="home_screen_text">easycarpool</string>
     <string name="male_gender_text">Male</string>
     <string name="female_gender_text">Female</string>
+    <string name="company_text">Choose your company</string>
+    <string-array name="company_arrays">
+        <item>Accenture</item>
+        <item>Cognizant</item>
+        <item>Genpact</item>
+        <item>HP</item>
+        <item>IBM</item>
+        <item>Infosys</item>
+        <item>TCS</item>
+        <item>Wipro</item>
+    </string-array>
 </resources>
