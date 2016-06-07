@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="40dp"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.easycarpool.easycarpoolapp.RegistrationActivity">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/FirstNameText"
+        android:width="300dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:hint="First Name" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LastNameText"
+        android:width="300dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/FirstNameText"
+        android:layout_centerHorizontal="true"
+        android:hint="Last Name"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/UserNameText"
+        android:layout_below="@+id/LastNameText"
+        android:layout_centerHorizontal="true"
+        android:width="300dp"
+        android:layout_marginTop="5dp"
+        android:hint="Username"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/EmailText"
+        android:layout_below="@+id/UserNameText"
+        android:layout_centerHorizontal="true"
+        android:width="300dp"
+        android:layout_marginTop="5dp"
+        android:hint="Email"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/AgeText"
+        android:layout_below="@+id/EmailText"
+        android:layout_alignLeft="@+id/EmailText"
+        android:layout_alignStart="@+id/EmailText"
+        android:width="300dp"
+        android:layout_marginTop="5dp"
+        android:hint="Age"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/MaleRadio"
+            android:text="@string/male_gender_text"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/FemaleRadio"
+            android:text="@string/female_gender_text"
+            android:layout_marginLeft="80dp"/>
+    </RadioGroup>
+
+    <EditText
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/PhoneText"
+        android:hint="Phone Number"
+    />
+
+    <Spinner
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner" />
+
+
+</LinearLayout>
