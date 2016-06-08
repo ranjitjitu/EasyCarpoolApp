@@ -20,6 +20,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         }, 2000);
 
-        //comment
+        //comment more
     }
 }

@@ -4,6 +4,8 @@
     <string name="male_gender_text">Male</string>
     <string name="female_gender_text">Female</string>
     <string name="company_text">Choose your company</string>
+    <string name="android_debug">true</string>
+    <string name="registration_text">Registration</string>
     <string-array name="company_arrays">
         <item>Accenture</item>
         <item>Cognizant</item>
