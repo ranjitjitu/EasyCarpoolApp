@@ -8,6 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:background="#cdcdcd"
     tools:context="com.easycarpool.easycarpoolapp.RegistrationActivity">
 
     <TextView
@@ -16,34 +17,35 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/registration_text"
         android:id="@+id/registrationText"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#006699"
+        android:textSize="30dp"
+        android:textAlignment="center" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="First Name"
+        android:ems="10"
         android:id="@+id/FirstNameText"
-        android:width="300dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:hint="First Name" />
-
+        android:layout_gravity="right" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Last Name"
+        android:ems="10"
         android:id="@+id/LastNameText"
-        android:width="300dp"
-        android:layout_below="@+id/FirstNameText"
-        android:layout_centerHorizontal="true"
-        android:hint="Last Name"/>
-
+        android:layout_gravity="right" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Username"
+        android:ems="10"
         android:id="@+id/UserNameText"
-        android:layout_below="@+id/LastNameText"
-        android:layout_centerHorizontal="true"
-        android:width="300dp"
-        android:hint="Username"/>
+        android:layout_gravity="right" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -61,7 +63,6 @@
         android:id="@+id/EmailText"
         android:layout_below="@+id/UserNameText"
         android:layout_centerHorizontal="true"
-        android:width="300dp"
         android:hint="Email"/>
 
     <EditText
@@ -73,13 +74,13 @@
         android:layout_below="@+id/EmailText"
         android:layout_alignLeft="@+id/EmailText"
         android:layout_alignStart="@+id/EmailText"
-        android:width="300dp"
         android:hint="Age"/>
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/genderRadio">
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,8 +110,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/passwordText"
-        android:hint="Password"
-        android:width="300dp"/>
+        android:hint="Password" />
 
     <EditText
         android:layout_width="match_parent"
@@ -118,9 +118,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/confirmPasswordText"
-        android:hint="Confirm Password"
-        android:width="300dp"
-/>
+        android:hint="Confirm Password" />
 
     <Button
         android:layout_width="match_parent"
@@ -132,7 +130,9 @@
         android:background="#006699"
         android:textColor="#ffffff"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp" />
+        android:paddingRight="30dp"
+        android:onClick="onRegister"
+        android:nestedScrollingEnabled="false" />
 
 
 </LinearLayout>

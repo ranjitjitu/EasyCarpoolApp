@@ -27,7 +27,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistrationActivity"
-            android:theme="@style/NoActionBarTheme"></activity>
+            android:theme="@style/NoActionBarTheme"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>
