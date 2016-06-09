@@ -13,5 +13,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="MyButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/indigo</item>
+        <item name="colorButtonNormal">@color/blue</item>
+    </style>
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/blue</item>
+        <item name="colorControlActivated">@color/indigo</item>
+    </style>
 </resources>

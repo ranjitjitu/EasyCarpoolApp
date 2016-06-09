@@ -1,9 +1,13 @@
 package com.easycarpool.easycarpoolapp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,12 +19,41 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     //private static PropertyUtil propertyUtil = new PropertyUtil();
+    private static final String RESPONSE_STRING = "response";
     private static ServiceCallClient serviceClient = new ServiceCallClient();
+    private static final String TAG = "easycarpool.com";
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                String response = bundle.getString(RESPONSE_STRING);
+                if (response != null) {
+                    try {
+                        JSONObject responseJson = new JSONObject(response);
+                        if(responseJson.get("Status").toString().equalsIgnoreCase("Success")){
+                            Intent i = new Intent(getBaseContext(),RegistrationActivity.class);
+                            startActivity(i);
+                        }else{
+                            showToast(responseJson.get("Message").toString());
+                        }
+                    }catch (JSONException je){
+                        Log.i(TAG,"onReceive"+je);
+                    }
+                }
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,25 +140,20 @@ public class RegistrationActivity extends AppCompatActivity {
         params.put("password",passwordText);
         params.put("gender",genderText);
        // PropertyUtil propertyUtil = new PropertyUtil();
-       final String url = "http://192.168.1.106:8080/EasyCarpool/easyCarpoolService/registration";
-        System.out.println(url);
-        System.out.println(params.toString());
-        try {
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        String response = serviceClient.sendPost(url, params);
-                        System.out.println(response);
-                    }catch (Exception e){
-                        System.out.println("onRegister"+e);
-                    }
-                }
-            }).start();
-        }catch (Exception e){
-            System.out.println("onRegister"+e);
+        String serviceName = "registration";
+        String paramString = "";
+        Enumeration e = params.keys();
+        while (e.hasMoreElements()) {
+            String key = (String) e.nextElement();
+            paramString += key + "=" + params.get(key) + "&";
         }
-
-
+        paramString = paramString.substring(0,paramString.length()-1);
+        Intent serviceIntent = new Intent(this,ServiceCallClient.class);
+        serviceIntent.putExtra("serviceName",serviceName);
+        serviceIntent.putExtra("serviceParams",paramString);
+        startService(serviceIntent);
+        Log.i(TAG,"service name : "+serviceName);
+        Log.i(TAG,"params : "+paramString);
 
     }
     private void showToast(String message){
