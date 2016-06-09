@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -23,37 +25,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     //private static PropertyUtil propertyUtil = new PropertyUtil();
     private static final String RESPONSE_STRING = "response";
-    private static ServiceCallClient serviceClient = new ServiceCallClient();
+    private static VolleyServiceClient serviceClient = new VolleyServiceClient();
     private static final String TAG = "easycarpool.com";
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                String response = bundle.getString(RESPONSE_STRING);
-                if (response != null) {
-                    try {
-                        JSONObject responseJson = new JSONObject(response);
-                        if(responseJson.get("Status").toString().equalsIgnoreCase("Success")){
-                            Intent i = new Intent(getBaseContext(),RegistrationActivity.class);
-                            startActivity(i);
-                        }else{
-                            showToast(responseJson.get("Message").toString());
-                        }
-                    }catch (JSONException je){
-                        Log.i(TAG,"onReceive"+je);
-                    }
-                }
-            }
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +43,9 @@ public class RegistrationActivity extends AppCompatActivity {
         Spinner companySpinner = (Spinner)findViewById(R.id.company_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, compArray);
         companySpinner.setAdapter(adapter);
+        Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+        Button registerButton = (Button)findViewById(R.id.register_button);
+        registerButton.setTypeface(fontAwesomeFont);
         //comment
     }
     protected void onRegister(View view){
@@ -129,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity {
             showToast("Password and Confirm Password doesn't match");
             return;
         }
-       final Hashtable params = new Hashtable();
+        Map<String,String> params = new HashMap();
         params.put("firstName",firstNameText);
         params.put("lastName",lastNameText);
         params.put("username",usernameText);
@@ -139,21 +123,22 @@ public class RegistrationActivity extends AppCompatActivity {
         params.put("email",emailText);
         params.put("password",passwordText);
         params.put("gender",genderText);
-       // PropertyUtil propertyUtil = new PropertyUtil();
         String serviceName = "registration";
-        String paramString = "";
-        Enumeration e = params.keys();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            paramString += key + "=" + params.get(key) + "&";
-        }
-        paramString = paramString.substring(0,paramString.length()-1);
-        Intent serviceIntent = new Intent(this,ServiceCallClient.class);
-        serviceIntent.putExtra("serviceName",serviceName);
-        serviceIntent.putExtra("serviceParams",paramString);
-        startService(serviceIntent);
+        String url = getResources().getString(R.string.service_url)+serviceName;
         Log.i(TAG,"service name : "+serviceName);
-        Log.i(TAG,"params : "+paramString);
+        Log.i(TAG,"params : "+params.toString());
+        String response = serviceClient.sendPostRequest(url,params);
+        try {
+            JSONObject responseJson = new JSONObject(response);
+            if (responseJson.optString("Status").toString().equalsIgnoreCase("Success")) {
+                Intent i = new Intent(getBaseContext(), VerificationActivity.class);
+                startActivity(i);
+            } else {
+                showToast(responseJson.get("Message").toString());
+            }
+        }catch (JSONException je){
+            Log.i(TAG,"onRegister : "+je);
+        }
 
     }
     private void showToast(String message){

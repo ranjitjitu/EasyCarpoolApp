@@ -6,7 +6,7 @@
     <string name="company_text">Choose your company</string>
     <string name="android_debug">true</string>
     <string name="registration_text">Registration</string>
-    <string name="service_url">http://10.73.44.101:8080/EasyCarpool/easyCarpoolService/</string>
+    <string name="service_url">http://192.168.1.106:8080/EasyCarpool/easyCarpoolService/</string>
     <string-array name="company_arrays">
         <item>Accenture</item>
         <item>Cognizant</item>
@@ -18,6 +18,9 @@
         <item>Wipro</item>
     </string-array>
     <string name="title_activity_login">easycarpool login</string>
+
+    <!-- Strings related to font awesome -->
+    <string name="check_square">&#xf14a;</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

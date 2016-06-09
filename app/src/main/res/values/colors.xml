@@ -7,5 +7,6 @@
     <color name="black">#000000</color>
     <color name="indigo">#4B0082</color>
     <color name="blue">#FF1F89FA</color>
+    <color name="light_gray">#bebbbb</color>
 
 </resources>
