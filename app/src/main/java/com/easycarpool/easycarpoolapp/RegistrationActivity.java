@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,6 +22,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +43,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final String RESPONSE_STRING = "response";
     private static VolleyServiceClient serviceClient = new VolleyServiceClient();
     private static final String TAG = "easycarpool.com";
+    private Boolean exit = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +56,29 @@ public class RegistrationActivity extends AppCompatActivity {
         Button registerButton = (Button)findViewById(R.id.register_button);
         registerButton.setTypeface(fontAwesomeFont);
         //comment
+    }
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+            startActivity(intent);
+            finish();
+            System.exit(0); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
+
     }
     protected void onRegister(View view){
         EditText firstNameComponent = (EditText)findViewById(R.id.FirstNameText);
@@ -127,19 +159,45 @@ public class RegistrationActivity extends AppCompatActivity {
         String url = getResources().getString(R.string.service_url)+serviceName;
         Log.i(TAG,"service name : "+serviceName);
         Log.i(TAG,"params : "+params.toString());
-        String response = serviceClient.sendPostRequest(url,params);
-        try {
-            JSONObject responseJson = new JSONObject(response);
-            if (responseJson.optString("Status").toString().equalsIgnoreCase("Success")) {
-                Intent i = new Intent(getBaseContext(), VerificationActivity.class);
-                startActivity(i);
-            } else {
-                showToast(responseJson.get("Message").toString());
+        final Map paramList = params;
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "Response from server : "+response);
+                        try {
+                            JSONObject responseJson = new JSONObject(response);
+                            if (responseJson.optString("Status").toString().equalsIgnoreCase("Success")) {
+                                Intent i = new Intent(getBaseContext(), VerificationActivity.class);
+                                startActivity(i);
+                            } else {
+                                showToast(responseJson.get("Message").toString());
+                            }
+                        }catch (JSONException je){
+                            Log.i(TAG,"onRegister : "+je);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                /*Map<String, String> params = new HashMap<String, String>();
+                params.put("biplab_5", "username");
+                params.put("biplab.sh.tripathy@gmail.com", "email");
+                params.put("MALE", "gender");
+                params.put("GOOGLE INC", "company");
+                params.put("123@qwe", "password");*/
+                return paramList;
             }
-        }catch (JSONException je){
-            Log.i(TAG,"onRegister : "+je);
-        }
 
+        };
+        queue.add(stringRequest);
     }
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
