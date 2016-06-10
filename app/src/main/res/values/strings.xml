@@ -5,7 +5,9 @@
     <string name="female_gender_text">Female</string>
     <string name="company_text">Choose your company</string>
     <string name="android_debug">true</string>
-    <string name="registration_text">Registration</string>
+    <string name="registration_text">Sign up now</string>
+    <string name="registration_text_extra">Fill in the form to get access</string>
+    <string name="register_button_text">Sign me up</string>
     <string name="service_url">http://192.168.1.106:8080/EasyCarpool/easyCarpoolService/</string>
     <string-array name="company_arrays">
         <item>Accenture</item>
@@ -20,7 +22,9 @@
     <string name="title_activity_login">easycarpool login</string>
 
     <!-- Strings related to font awesome -->
-    <string name="check_square">&#xf14a;</string>
+    <string name="font_check_square">&#xf14a;</string>
+    <string name="font_registration_icon">&#xf044;</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

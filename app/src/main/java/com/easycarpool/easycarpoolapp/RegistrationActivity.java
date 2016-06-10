@@ -52,9 +52,9 @@ public class RegistrationActivity extends AppCompatActivity {
         Spinner companySpinner = (Spinner)findViewById(R.id.company_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, compArray);
         companySpinner.setAdapter(adapter);
-        Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-        Button registerButton = (Button)findViewById(R.id.register_button);
-        registerButton.setTypeface(fontAwesomeFont);
+        Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "fonts/fontawesome-webfont.ttf");
+        TextView registerIcon = (TextView)findViewById(R.id.registrationIcon);
+        registerIcon.setTypeface(fontAwesomeFont);
         //comment
     }
     @Override
@@ -81,40 +81,20 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
     protected void onRegister(View view){
-        EditText firstNameComponent = (EditText)findViewById(R.id.FirstNameText);
-        EditText lastNameComponent = (EditText)findViewById(R.id.LastNameText);
         EditText userNameComponent = (EditText)findViewById(R.id.UserNameText);
         Spinner companyComponent = (Spinner)findViewById(R.id.company_spinner);
         EditText emailComponent = (EditText)findViewById(R.id.EmailText);
-        EditText ageComponent = (EditText)findViewById(R.id.AgeText);
-        RadioGroup genderComponent = (RadioGroup)findViewById(R.id.genderRadio);
-        RadioButton selectedGender = (RadioButton)findViewById(genderComponent.getCheckedRadioButtonId());
         EditText phoneNumberComponent = (EditText)findViewById(R.id.PhoneText);
         EditText passwordComponent = (EditText)findViewById(R.id.passwordText);
         EditText confirmPasswordComponent = (EditText)findViewById(R.id.confirmPasswordText);
         String companyText = companyComponent.getSelectedItem().toString().trim();
-        String firstNameText = firstNameComponent.getText().toString().trim();
-        String lastNameText = lastNameComponent.getText().toString().trim();
         String usernameText = userNameComponent.getText().toString().trim();
         String emailText = emailComponent.getText().toString().trim();
-        String ageText = ageComponent.getText().toString().trim();
-        String genderText = "";
-        if(selectedGender!=null) {
-            genderText = selectedGender.getText().toString().trim();
-        }
         String phoneText = phoneNumberComponent.getText().toString().trim();
         String passwordText = passwordComponent.getText().toString().trim();
         String confirmPasswordText = confirmPasswordComponent.getText().toString().trim();
         if(companyText == null || companyText.equalsIgnoreCase("")){
             showToast("Please Select a Company");
-            return;
-        }
-        if(firstNameText == null || firstNameText.equalsIgnoreCase("")){
-            showToast("First Name is Mandatory");
-            return;
-        }
-        if(lastNameText == null || lastNameText.equalsIgnoreCase("")){
-            showToast("Last Name is Mandatory");
             return;
         }
         if(usernameText == null || usernameText.equalsIgnoreCase("")){
@@ -125,14 +105,7 @@ public class RegistrationActivity extends AppCompatActivity {
             showToast("Email is not valid");
             return;
         }
-        if(ageText == null || ageText.equalsIgnoreCase("")){
-            showToast("Age is Mandatory");
-            return;
-        }
-        if(genderText == null || genderText.equalsIgnoreCase("")){
-            showToast("Choose your Gender");
-            return;
-        }if(!isValidPhone(phoneText) || !(phoneText.length()==10)){
+  if(!isValidPhone(phoneText) || !(phoneText.length()==10)){
             showToast("Phone number is Invalid");
             return;
         }if(passwordText == null || passwordText.equalsIgnoreCase("")){
@@ -146,15 +119,11 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
         Map<String,String> params = new HashMap();
-        params.put("firstName",firstNameText);
-        params.put("lastName",lastNameText);
         params.put("username",usernameText);
         params.put("company",companyText);
-        params.put("age",ageText);
         params.put("phoneNumber",phoneText);
         params.put("email",emailText);
         params.put("password",passwordText);
-        params.put("gender",genderText);
         String serviceName = "registration";
         String url = getResources().getString(R.string.service_url)+serviceName;
         Log.i(TAG,"service name : "+serviceName);
