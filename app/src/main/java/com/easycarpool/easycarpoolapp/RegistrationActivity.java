@@ -3,8 +3,10 @@ package com.easycarpool.easycarpoolapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +14,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -47,14 +52,24 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-        String [] compArray = getResources().getStringArray(R.array.company_arrays);
-        Spinner companySpinner = (Spinner)findViewById(R.id.company_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, compArray);
-        companySpinner.setAdapter(adapter);
-        Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "fonts/fontawesome-webfont.ttf");
-        TextView registerIcon = (TextView)findViewById(R.id.registrationIcon);
-        registerIcon.setTypeface(fontAwesomeFont);
+        SharedPreferences sp =
+                getSharedPreferences("ec_prefs",
+                        Context.MODE_PRIVATE);
+        String ifOTPScreenActivated  = sp.getString("OTPScreenActivated", null);
+        if(ifOTPScreenActivated!=null && ifOTPScreenActivated.equalsIgnoreCase("true")){
+            Log.i(TAG, "Navigating to Verification Page");
+            Intent i = new Intent(getBaseContext(),VerificationActivity.class);
+            startActivity(i);
+        }else {
+            setContentView(R.layout.activity_registration);
+            String[] compArray = getResources().getStringArray(R.array.company_arrays);
+            Spinner companySpinner = (Spinner) findViewById(R.id.company_spinner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, compArray);
+            companySpinner.setAdapter(adapter);
+            Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "fonts/fontawesome-webfont.ttf");
+            TextView registerIcon = (TextView) findViewById(R.id.registrationIcon);
+            registerIcon.setTypeface(fontAwesomeFont);
+        }
         //comment
     }
     @Override
@@ -79,6 +94,20 @@ public class RegistrationActivity extends AppCompatActivity {
 
         }
 
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        final String dataStore = getResources().getString(R.string.data_store);
+        SharedPreferences sp =
+                getSharedPreferences(dataStore,
+                        Context.MODE_PRIVATE);
+        String ifOTPScreenActivated  = sp.getString("OTPScreenActivated", null);
+        if(ifOTPScreenActivated!=null && ifOTPScreenActivated.equalsIgnoreCase("true")){
+            Log.i(TAG, "Navigating to Verification Page");
+            Intent i = new Intent(getBaseContext(),VerificationActivity.class);
+            startActivity(i);
+        }
     }
     protected void onRegister(View view){
         EditText userNameComponent = (EditText)findViewById(R.id.UserNameText);
@@ -130,6 +159,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.i(TAG,"params : "+params.toString());
         final Map paramList = params;
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        final String dataStore = getResources().getString(R.string.data_store);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -138,6 +168,10 @@ public class RegistrationActivity extends AppCompatActivity {
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             if (responseJson.optString("Status").toString().equalsIgnoreCase("Success")) {
+                                SharedPreferences sp = getSharedPreferences(dataStore, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putString("OTPScreenActivated", "true");
+                                editor.commit();
                                 Intent i = new Intent(getBaseContext(), VerificationActivity.class);
                                 startActivity(i);
                             } else {

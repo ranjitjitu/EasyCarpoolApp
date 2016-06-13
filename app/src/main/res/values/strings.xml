@@ -25,6 +25,8 @@
     <string name="font_check_square">&#xf14a;</string>
     <string name="font_registration_icon">&#xf044;</string>
 
+    <!--data store settings -->
+    <string name="data_store">ec_prefs</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

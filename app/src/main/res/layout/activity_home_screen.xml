@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#21b2d7"
+    android:background="@drawable/gradient_3"
     tools:context="com.easycarpool.easycarpoolapp.HomeScreenActivity">
 
     <TextView
